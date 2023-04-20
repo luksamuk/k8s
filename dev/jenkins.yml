@@ -61,7 +61,7 @@ spec:
       serviceAccountName: jenkins-admin-sa
       containers:
         - name: jenkins-container
-          image: jenkins/jenkins:lts
+          image: jenkins/jenkins:lts-jdk11
           resources:
             limits:
               memory: "1Gi"
