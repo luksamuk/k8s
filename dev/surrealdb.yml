@@ -40,6 +40,20 @@ spec:
           ports:
             - containerPort: 8000
               name: surrealdb
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 60
       volumes:
         - name: surrealdb-data
           persistentVolumeClaim:
