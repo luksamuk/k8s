@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: surrealdb-pvc
+  namespace: devtools
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: surrealdb-deployment
+  namespace: devtools
+spec:
+  template:
+    metadata:
+      name: surrealdb
+      labels:
+        app: surrealdb
+    spec:
+      containers:
+        - name: surrealdb-container
+          image: surrealdb/surrealdb:latest
+          command: ["/surreal"]
+          args:
+            - "start"
+            - "--user"
+            - "root"
+            - "--pass"
+            - "root"
+            - "file:/mydata/mydatabase.db"
+          volumeMounts:
+            - name: surrealdb-data
+              mountPath: /mydata
+          ports:
+            - containerPort: 8000
+              name: surrealdb
+      volumes:
+        - name: surrealdb-data
+          persistentVolumeClaim:
+            claimName: surrealdb-pvc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: surrealdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: surrealdb-svc
+  namespace: devtools
+spec:
+  type: LoadBalancer
+  selector:
+    app: surrealdb
+  ports:
+    - port: 10001
+      targetPort: 8000
+      nodePort: 30101
