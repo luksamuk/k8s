@@ -37,3 +37,10 @@ Miscellaneous. Normally part of the misctools namespace.
   - `30202`: RCON port, connect to it with a tool such as mcrcon to enter server commands.
   - `30203` (UDP only): Bedrock Server port through Geyser plugin.
 
+
+### Examples
+
+Code examples for some applications.
+
+- `newsqldb`: Example queries and Rust project for using SurrealDB.
+
