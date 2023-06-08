@@ -27,6 +27,10 @@ Development tools. Normally part of the devtools namespace.
   - `30101`: Server port. Uses `root` user/pass.
 - `mariadb.yml`: MariaDB database.
   - `30400`: Database port. User: `minerva`, pass: `mysql`.
+- `phpmyadmin.yml`: phpMyAdmin tool.
+  - `30401`: Port for accessing phpMyAdmin.
+  - *NOTE:* When attempting to access MariaDB, use the IP of the cluster
+	as reference, from your computer's standpoint.
 
 ### misc
 
