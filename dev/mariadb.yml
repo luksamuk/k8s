@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-configmap
+  namespace: devtools
+data:
+  MARIADB_ROOT_PASSWORD: "mysql"
+  MARIADB_DATABASE: "minerva"
+  MARIADB_USER: "minerva"
+  MARIADB_PASSWORD: "mysql"
+  MYSQL_ROOT_PASSWORD: "mysql"
+  MYSQL_DATABASE: "minerva"
+  MYSQL_USER: "minerva"
+  MYSQL_PASSWORD: "mysql"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc
+  namespace: devtools
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+  namespace: devtools
+spec:
+  template:
+    metadata:
+      name: mariadb
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb-container
+          image: mariadb:10.9.6
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mariadb-pv
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - configMapRef:
+                name: mariadb-configmap
+      volumes:
+        - name: mariadb-pv
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-svc
+  namespace: devtools
+spec:
+  type: LoadBalancer
+  selector:
+    app: mariadb
+  ports:
+    - port: 3306
+      nodePort: 30400
+

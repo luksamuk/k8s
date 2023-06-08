@@ -25,6 +25,8 @@ Development tools. Normally part of the devtools namespace.
   - `30100`: HTTP/REST port.
 - `surrealdb.yml`: SurrealDB NewSQL database.
   - `30101`: Server port. Uses `root` user/pass.
+- `mariadb.yml`: MariaDB database.
+  - `30400`: Database port. User: `minerva`, pass: `mysql`.
 
 ### misc
 
