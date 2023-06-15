@@ -31,6 +31,9 @@ Development tools. Normally part of the devtools namespace.
   - `30401`: Port for accessing phpMyAdmin.
   - *NOTE:* When attempting to access MariaDB, use the IP of the cluster
 	as reference, from your computer's standpoint.
+- `postgresql.yml`: PostgreSQL database for testing.
+  - `30402`: Database port. User/pass: `postgres`.
+
 
 ### misc
 
