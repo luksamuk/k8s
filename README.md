@@ -33,6 +33,10 @@ Development tools. Normally part of the devtools namespace.
 	as reference, from your computer's standpoint.
 - `postgresql.yml`: PostgreSQL database for testing.
   - `30402`: Database port. User/pass: `postgres`.
+- `rabbitmq.yml`: RabbitMQ message broker.
+  - `30403`: AMQP protocol port.
+  - `30404`: Management port.
+  - `30405`: VHost port.
 
 
 ### misc
