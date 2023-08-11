@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: postgresql9-secret
+  namespace: devtools
+data:
+  POSTGRES_USER: cG9zdGdyZXM=
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql9-pvc
+  namespace: devtools
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql9-deployment
+  namespace: devtools
+spec:
+  template:
+    metadata:
+      name: postgresql9
+      labels:
+        app: postgresql9
+    spec:
+      containers:
+        - name: postgresql9-container
+          image: postgres:9.4.26-alpine
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresql9-pv
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: postgresql9-secret
+      volumes:
+        - name: postgresql9-pv
+          persistentVolumeClaim:
+            claimName: postgresql9-pvc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql9
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql9-svc
+  namespace: devtools
+spec:
+  type: ClusterIP
+  selector:
+    app: postgresql9
+  ports:
+    - port: 5433
+      targetPort: 5432

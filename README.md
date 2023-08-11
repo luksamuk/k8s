@@ -33,11 +33,14 @@ Development tools. Normally part of the devtools namespace.
 	as reference, from your computer's standpoint.
 - `postgresql.yml`: PostgreSQL database for testing.
   - `30402`: Database port. User/pass: `postgres`.
+- `postgres9.yml`: PostgreSQL database for testing, version 9.4.
+  - `5433` (ClusterIP): Database port. Can only be accessed within the cluster. Use port forwarding to access locally.
 - `rabbitmq.yml`: RabbitMQ message broker.
   - `30403`: AMQP protocol port.
   - `30404`: Management port.
   - `30405`: VHost port.
-
+- `pgadmin.yml`: PgAdmin4 for accessing PostgreSQL databases within the cluster. Credentials are `admin@admin.com`, password `admin`.
+  - `30406`: HTTP port for browser access.
 
 ### misc
 
