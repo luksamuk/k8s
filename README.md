@@ -52,7 +52,10 @@ Miscellaneous. Normally part of the misctools namespace.
   - `30201`: Java Server port.
   - `30202`: RCON port, connect to it with a tool such as mcrcon to enter server commands.
   - `30203` (UDP only): Bedrock Server port through Geyser plugin.
-
+- `browservice.yml`: Service for accessing the web from outdated browsers and OSes (such
+  as Windows 98 with IE6). Please refer to the [project page](https://github.com/ttalvitie/browservice/) and [this other repository](https://github.com/vivlim/browservice-docker)
+  for the Dockerfile. Notice that this .yml uses an ARM64 image!
+  - `30406`: Connect to this port from your browser.
 
 ### Examples
 

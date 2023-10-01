@@ -1,0 +1,16 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browservice-deployment
+  namespace: misctools
+spec:
+  template:
+    metadata:
+      name: browservice
+      labels:
+        app: browservice
+    spec:
+      containers:
+        - name: browservice-container
+          image: walkero/browservice
