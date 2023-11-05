@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-pw
+  namespace: iot
+data:
+  # Generate a new password using the command mosquitto_passwd:
+  # $ docker run -it eclipse-mosquitto:latest /bin/sh
+  # $ mosquitto_passwd -c -b password.txt admin admin
+  # $ cat password.txt
+  password.txt: |
+    admin:$7$101$ueuwX7+Chu0N8fwr$SV4vQZYRXFbmjCIpRk/3NOeZYNBPhDU4SmgnyzDUvfYM0ir8rK4XF82MpT0JoTt4zhyC0QEFyt+vi1Eza30xXw==

@@ -63,3 +63,8 @@ Code examples for some applications.
 
 - `newsqldb`: Example queries and Rust project for using SurrealDB.
 
+### iot
+
+Stuff for IoT devices.
+
+- `mosquitto`: Mosquitto MQTT message broker. Exposed on route `/mqtt` through an ingress controller (Traefik on K3s).

@@ -1,0 +1,4 @@
+resources:
+  - mosquitto-config.yml
+  - mosquitto-pw.yml
+  - mosquitto.yml
