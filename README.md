@@ -56,6 +56,9 @@ Miscellaneous. Normally part of the misctools namespace.
   as Windows 98 with IE6). Please refer to the [project page](https://github.com/ttalvitie/browservice/) and [this other repository](https://github.com/vivlim/browservice-docker)
   for the Dockerfile. Notice that this .yml uses an ARM64 image!
   - `30406`: Connect to this port from your browser.
+- `transmission`: uTorrent Server with GUI. I usually deploy this when I need to download a torrent to an external device.
+  - `30500`: GUI, accessible from web browser.
+  - `30501`: Actual service port.
 
 ### Examples
 
