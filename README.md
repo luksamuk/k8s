@@ -41,6 +41,8 @@ Development tools. Normally part of the devtools namespace.
   - `30405`: VHost port.
 - `pgadmin.yml`: PgAdmin4 for accessing PostgreSQL databases within the cluster. Credentials are `admin@admin.com`, password `admin`.
   - `30406`: HTTP port for browser access.
+- `ichef-api`: iChef API for chefs to share recipes with amateur cooks.
+  - `30411`: HTTP port for API access.
 
 ### misc
 

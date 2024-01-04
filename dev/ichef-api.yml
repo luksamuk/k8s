@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ichef-api-configmap
+  namespace: devtools
+data:
+  DATABASE_NAME: ichef
+  DATABASE_HOST: postgresql-svc
+  DATABASE_PORT: "5432"
+  API_PORT: "8000"
+  JWT_ALGORITHM: HS256
+  JWT_EXPIRY_SECONDS: "600"
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: ichef-api-secret
+  namespace: devtools
+data:
+  DATABASE_USER: cG9zdGdyZXM=
+  DATABASE_PASSWORD: cG9zdGdyZXM=
+  JWT_SECRET: dzV1YzNnNmxhT0Y5d0FBcWpfcHVvWEtocWdqUU5qX3cl
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ichef-api-deployment
+  namespace: devtools
+spec:
+  template:
+    metadata:
+      name: ichef-api
+      labels:
+        app: ichef-api
+    spec:
+      containers:
+        - name: ichef-api-container
+          image: luksamuk/ichef-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: ichef-api-configmap
+            - secretRef:
+                name: ichef-api-secret
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ichef-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ichef-api-svc
+  namespace: devtools
+spec:
+  type: LoadBalancer
+  selector:
+    app: ichef-api
+  ports:
+    - port: 8000
+      nodePort: 30411
