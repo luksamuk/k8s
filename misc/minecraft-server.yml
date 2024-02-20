@@ -44,6 +44,7 @@ data:
   MOTD: "Minecraft Server on ARM64 Kubernetes"
   PVP: "true"
   RCON_PASSWORD: "minecraft"
+  ENABLE_QUERY: "true"
   PLUGINS: |
     https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
     https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
@@ -66,7 +67,10 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 25565
-              name: minecraft
+              name: java
+            - containerPort: 25565
+              name: query
+              protocol: UDP
             - containerPort: 25575
               name: rcon
             - containerPort: 19132
@@ -102,16 +106,24 @@ spec:
   selector:
     app: minecraft-server
   ports:
-    # Java
+    # Java & Query
     - port: 25565
       targetPort: 25565
-      name: minecraft
+      name: java
       nodePort: 30201
+      protocol: TCP
+    # Query
+    - port: 25565
+      targetPort: 25565
+      name: query
+      nodePort: 30201
+      protocol: UDP
     # Java RCON. Use a tool such as mcrcon to connect
     - port: 25575
       targetPort: 25575
       nodePort: 30202
       name: rcon
+      protocol: TCP
     # Bedrock
     - port: 19132
       targetPort: 19132
