@@ -26,72 +26,6 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minecraft-serverprops-configmap
-  namespace: misctools
-data:
-  server.properties: |
-    #Minecraft server properties
-    #Sat Jan 14 04:29:07 UTC 2023
-    enable-jmx-monitoring=false
-    rcon.port=25575
-    level-seed=
-    gamemode=survival
-    enable-command-block=true
-    enable-query=false
-    generator-settings={}
-    enforce-secure-profile=false
-    level-name=world
-    motd=Minecraft Server on ARM64 Kubernetes
-    query.port=25565
-    pvp=true
-    generate-structures=true
-    max-chained-neighbor-updates=1000000
-    difficulty=easy
-    network-compression-threshold=256
-    max-tick-time=60000
-    require-resource-pack=false
-    use-native-transport=true
-    max-players=20
-    online-mode=false
-    enable-status=true
-    allow-flight=false
-    initial-disabled-packs=
-    broadcast-rcon-to-ops=true
-    view-distance=10
-    server-ip=
-    resource-pack-prompt=
-    allow-nether=true
-    server-port=25565
-    enable-rcon=true
-    sync-chunk-writes=true
-    op-permission-level=4
-    prevent-proxy-connections=false
-    hide-online-players=false
-    resource-pack=
-    entity-broadcast-range-percentage=100
-    simulation-distance=10
-    rcon.password=minecraft
-    player-idle-timeout=0
-    force-gamemode=false
-    rate-limit=0
-    hardcore=false
-    white-list=false
-    broadcast-console-to-ops=true
-    spawn-npcs=true
-    spawn-animals=true
-    function-permission-level=2
-    initial-enabled-packs=vanilla
-    level-type=minecraft\:normal
-    text-filtering-config=
-    spawn-monsters=true
-    enforce-whitelist=false
-    spawn-protection=16
-    resource-pack-sha1=
-    max-world-size=29999984
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: minecraft-configmap
   namespace: misctools
 data:
@@ -100,7 +34,19 @@ data:
   stdin_open: "true"
   restart: "unless-stopped"
   TYPE: "SPIGOT"
+  FORCE_REDOWNLOAD: "true"
   TZ: "America/Sao_Paulo"
+  RCON_PORT: "25575"
+  MODE: "survival"
+  ENABLE_COMMAND_BLOCK: "true"
+  ENABLE_QUERY: "false"
+  LEVEL: "world"
+  MOTD: "Minecraft Server on ARM64 Kubernetes"
+  PVP: "true"
+  RCON_PASSWORD: "minecraft"
+  PLUGINS: |
+    https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+    https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -114,30 +60,10 @@ spec:
       labels:
         app: minecraft-server
     spec:
-      initContainers:
-        - name: fetch-plugins
-          image: alpine:3.17
-          command: ["sh", "-c"]
-          args:
-            - |
-              apk add curl
-              
-              # Install Geyser for Spigot Server
-              curl \
-              "https://ci.opencollab.dev/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/build/libs/Geyser-Spigot.jar" \
-              -o /plugins/Geyser-Spigot.jar
-
-              # Install Floodgate for Spigot Server
-              curl \
-              "https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/build/libs/floodgate-spigot.jar" \
-              -o /plugins/floodgate-spigot.jar
-          volumeMounts:
-            - name: minecraft-plugins
-              mountPath: /plugins
       containers:
         - name: minecraft-server-container
-          image: itzg/minecraft-server:java17
-          imagePullPolicy: IfNotPresent
+          image: itzg/minecraft-server:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 25565
               name: minecraft
@@ -149,9 +75,6 @@ spec:
           volumeMounts:
             - name: minecraft-data
               mountPath: /data
-            - name: server-config
-              mountPath: /data/server.properties
-              subPath: server.properties
             - name: minecraft-plugins
               mountPath: /plugins
           envFrom:
@@ -161,9 +84,6 @@ spec:
         - name: minecraft-data
           persistentVolumeClaim:
             claimName: minecraft-server-pvc
-        - name: server-config
-          configMap:
-            name: minecraft-serverprops-configmap
         - name: minecraft-plugins
           persistentVolumeClaim:
             claimName: minecraft-plugins-pvc
