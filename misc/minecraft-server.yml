@@ -39,7 +39,7 @@ data:
   RCON_PORT: "25575"
   MODE: "survival"
   ENABLE_COMMAND_BLOCK: "true"
-  ENABLE_QUERY: "false"
+  ONLINE_MODE: "false"
   LEVEL: "world"
   MOTD: "Minecraft Server on ARM64 Kubernetes"
   PVP: "true"
@@ -64,7 +64,7 @@ spec:
       containers:
         - name: minecraft-server-container
           image: itzg/minecraft-server:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 25565
               name: java
