@@ -13,6 +13,39 @@ optimized and tested on an on-premise k3s instance with ARM64 processor.
 
 ## Contents
 
+### rpi-config
+
+Configuration for installing K3s on a cluster of Raspberry Pi boards.
+
+I prefer using Raspberry Pi 4 Model B, with 8GB of RAM, and at least a 64GB SD Card (though external SSD storage would be far more trustworthy). Currently I have two of those, and a single one is a master of the network. They also communicate through my Tailnet on Tailscale, since my router sucks and tends to mess with my local connections.
+
+Configuration is largely based on this one: https://dev.to/hatati/cook-up-a-k3s-cluster-on-raspberry-pies-with-ansible-4bb4
+
+**You will also need to ensure that the user described on the inventory can use passwordless `sudo`.** Please notice that **you need to be wary of the security implications of this.** I recommend using the separate sudoer file approach:
+
+```
+# On a file such as /etc/sudoers.d/username:
+username ALL=(ALL) NOPASSWD: ALL
+```
+
+> Remember that these are the files for MY local setup. You'll need to tweak the `inventory.yml` file if you want to spin your own.
+
+To install K3s on all nodes:
+
+```bash
+ansible-playbook -i inventory.yml install.yml
+```
+
+To uninstall:
+
+```bash
+ansible-playbook -i inventory.yml uninstall.yml
+```
+
+This will create a `kubeconfig.yml` file which you should use for remote management from your own computer.
+
+I also recommend installing [k9s](https://k9scli.io/), and maybe [Lens](https://k8slens.dev/).
+
 ### dev
 
 Development tools. Normally part of the devtools namespace.

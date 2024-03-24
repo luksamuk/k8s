@@ -1,0 +1,20 @@
+workers:
+  hosts:
+    rpi4-slave-1:
+      ansible_host: 100.110.91.80
+      ansible_user: alchemist
+
+# Only a single master node should be registered here
+masters:
+  hosts:
+    rpi4-master:
+      ansible_host: 100.83.101.113
+      ansible_user: alchemist
+
+rpis:
+  children:
+    masters:
+    workers:
+  vars:
+    # Always check latest release on https://github.com/k3s-io/k3s/
+    k3s_version: v1.29.2+k3s1
