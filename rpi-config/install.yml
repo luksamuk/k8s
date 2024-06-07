@@ -25,7 +25,7 @@
     - name: Install k3s master
       shell: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_NODE_NAME={{ inventory_hostname }} K3S_KUBECONFIG_MODE="644" sh -s - server --cluster-init
     - name: Extract K3S_TOKEN
-      command: cat /var/lib/rancher/k3s/server/node-token
+      command: cat /var/lib/rancher/k3s/server/token
       register: k3s_token
       failed_when: k3s_token is failed or k3s_token.stdout is undefined
     - name: Set K3S_TOKEN as a fact
