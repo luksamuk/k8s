@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: mariadb-container
-          image: mariadb:10.9.6
+          image: mariadb:11.3
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /var/lib/mysql

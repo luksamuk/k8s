@@ -19,9 +19,18 @@ data:
   10-defaults.conf: |
     log.console.level = info
     channel_max = 1700
-    default_user = rabbitmq
-    default_pass = rabbitmq
     default_user_tags.administrator = true
+---
+# RabbitMQ Credentials
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: rabbitmq-credentials
+  namespace: devtools
+data:
+  RABBITMQ_DEFAULT_USER: cmFiYml0bXE=
+  RABBITMQ_DEFAULT_PASS: cmFiYml0bXE=
 ---
 # PersistentVolumeClaim for /var/lib/rabbitmq
 apiVersion: v1
@@ -51,7 +60,7 @@ spec:
     spec:
       containers:
         - name: rabbitmq-container
-          image: rabbitmq:3.11-management-alpine
+          image: rabbitmq:3.13-management-alpine
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /var/lib/rabbitmq
@@ -64,6 +73,9 @@ spec:
             - containerPort: 5672
             - containerPort: 15672
             - containerPort: 15692
+          envFrom:
+            - secretRef:
+                name: rabbitmq-credentials
       volumes:
         - name: rabbitmq-pv
           persistentVolumeClaim:
