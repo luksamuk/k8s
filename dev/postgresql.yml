@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgresql-svc
+  name: postgresql
   namespace: devtools
 spec:
   type: LoadBalancer
