@@ -6,13 +6,13 @@ metadata:
   namespace: devtools
 data:
   MARIADB_ROOT_PASSWORD: "mysql"
-  MARIADB_DATABASE: "minerva"
-  MARIADB_USER: "minerva"
-  MARIADB_PASSWORD: "mysql"
-  MYSQL_ROOT_PASSWORD: "mysql"
-  MYSQL_DATABASE: "minerva"
-  MYSQL_USER: "minerva"
-  MYSQL_PASSWORD: "mysql"
+  MARIADB_DATABASE:      "mysql"
+  MARIADB_USER:          "mysql"
+  MARIADB_PASSWORD:      "mysql"
+  MYSQL_ROOT_PASSWORD:   "mysql"
+  MYSQL_DATABASE:        "mysql"
+  MYSQL_USER:            "mysql"
+  MYSQL_PASSWORD:        "mysql"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
